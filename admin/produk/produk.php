@@ -1,17 +1,24 @@
 <?php 
     session_start();
     include("../../config/database.php");
+<<<<<<< HEAD
 
     $categories_result = mysqli_query($conn, "SELECT * FROM categories ORDER BY name ASC");
     $categories = mysqli_fetch_all($categories_result, MYSQLI_ASSOC);
+=======
+>>>>>>> 5fd104489c427d5bdc1d62d4d7c79fd812daa44a
 ?>
 
 <?php 
     include "../../includes/header.php";
     include "../../includes/sidebar.php";
 ?>
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
+=======
+
+>>>>>>> 5fd104489c427d5bdc1d62d4d7c79fd812daa44a
 <body>
 <main class="main">
     <section class="content"> 
@@ -35,6 +42,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+<<<<<<< HEAD
         <form action="create.php" method="post">
           <div class="mb-3">
             <label for="name" class="form-label">Nama Produk</label>
@@ -66,6 +74,13 @@
             <button type="submit" name="create" class="btn btn-primary">Tambah</button>
           </div>
         </form>
+=======
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+>>>>>>> 5fd104489c427d5bdc1d62d4d7c79fd812daa44a
       </div>
     </div>
   </div>
@@ -75,6 +90,7 @@
             <table class="table table-striped table-hover">
     <thead>
     <tr>
+<<<<<<< HEAD
       <th scope="col">ID</th>
       <th scope="col">KODE PRODUK</th>
       <th scope="col">NAMA PRODUK</th>
@@ -158,10 +174,41 @@
       </td>
     </tr>
     <?php endforeach; ?>
+=======
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>John</td>
+      <td>Doe</td>
+      <td>@social</td>
+    </tr>
+>>>>>>> 5fd104489c427d5bdc1d62d4d7c79fd812daa44a
   </tbody>
 </table>
         </div>
     </section>
 </main>
+<<<<<<< HEAD
 </body>
 </html>
+=======
+</body>
+>>>>>>> 5fd104489c427d5bdc1d62d4d7c79fd812daa44a
