@@ -612,29 +612,6 @@
 
     <script>
         // ==========================================
-        // SIDEBAR MOBILE
-        // ==========================================
-
-        const menuToggle = document.getElementById("menuToggle");
-        const sidebar = document.getElementById("sidebar");
-        const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-        menuToggle.addEventListener("click", function () {
-
-            sidebar.classList.toggle("show");
-            sidebarOverlay.classList.toggle("show");
-
-        });
-
-        sidebarOverlay.addEventListener("click", function () {
-
-            sidebar.classList.remove("show");
-            sidebarOverlay.classList.remove("show");
-
-        });
-
-
-        // ==========================================
         // SALES CHART
         // ==========================================
 

@@ -48,14 +48,9 @@
             <span>Kategori</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/produk/produk.php">
+        <a href="<?= BASE_URL ?>admin/pelanggan/pelanggan.php">
             <i class="bi bi-people"></i>
             <span>Pelanggan</span>
-        </a>
-
-        <a href="<?= BASE_URL ?>admin/produk/produk.php">
-            <i class="bi bi-truck"></i>
-            <span>Supplier</span>
         </a>
 
         <div class="menu-title mt-3">
