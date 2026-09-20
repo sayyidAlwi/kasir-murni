@@ -57,7 +57,7 @@
             Transaksi
         </div>
 
-        <a href="<?= BASE_URL ?>admin/produk/produk.php">
+        <a href="<?= BASE_URL ?>admin/penjualan/penjualan.php">
             <i class="bi bi-cart3"></i>
             <span>Penjualan</span>
         </a>

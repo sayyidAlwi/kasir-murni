@@ -48,3 +48,31 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: false },
   );
 });
+
+const sidebarToggle = document.getElementById("sidebarToggle");
+const sidebar = document.getElementById("sidebar");
+sidebarToggle.addEventListener("click", function () {
+  sidebar.classList.toggle("show");
+});
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("keyup", function () {
+  const keyword = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#salesTable tr");
+  rows.forEach(function (row) {
+    const text = row.textContent.toLowerCase();
+    if (text.includes(keyword)) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+});
+function filterData() {
+  const from = document.getElementById("dateFrom").value;
+  const to = document.getElementById("dateTo").value;
+  if (!from && !to) {
+    alert("Silakan pilih tanggal terlebih dahulu.");
+    return;
+  }
+  alert("Filter tanggal: " + (from || "-") + " sampai " + (to || "-"));
+}
