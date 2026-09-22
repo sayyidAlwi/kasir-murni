@@ -115,3 +115,61 @@ CREATE TABLE transaction_details (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
+
+-- =========================
+-- TABLE SUPPLIERS
+-- =========================
+
+CREATE TABLE suppliers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+
+-- =========================
+-- TABLE PURCHASES
+-- =========================
+
+CREATE TABLE purchases (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    invoice_number VARCHAR(50) NOT NULL UNIQUE,
+    supplier_id INT NOT NULL,
+    user_id INT NOT NULL,
+    total DECIMAL(15,2) NOT NULL DEFAULT 0,
+    paid DECIMAL(15,2) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (supplier_id)
+        REFERENCES suppliers(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+
+-- =========================
+-- TABLE PURCHASE DETAILS
+-- =========================
+
+CREATE TABLE purchase_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    purchase_id INT NOT NULL,
+    product_id INT NOT NULL,
+    price DECIMAL(15,2) NOT NULL,
+    quantity INT NOT NULL,
+    subtotal DECIMAL(15,2) NOT NULL,
+
+    FOREIGN KEY (purchase_id)
+        REFERENCES purchases(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    FOREIGN KEY (product_id)
+        REFERENCES products(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);

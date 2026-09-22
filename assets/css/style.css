@@ -405,7 +405,7 @@ body {
 
 
 .date-group input:focus {
-    border-color: #6366f1;
+    border-color: #2058ff;
 
     box-shadow:
         0 0 0 3px rgba(99, 102, 241, 0.08);
@@ -430,7 +430,7 @@ body {
     border: none;
     border-radius: 8px;
 
-    background: #4f46e5;
+    background: #2a5fff;
     color: #ffffff;
 
     font-size: 12px;
@@ -443,7 +443,7 @@ body {
 
 
 .filter-button:hover {
-    background: #4338ca;
+    background: #195bff;
     transform: translateY(-1px);
 }
 

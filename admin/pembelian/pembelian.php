@@ -11,171 +11,68 @@ include '../../includes/sidebar.php';
 <body>
     <main class="main">
         <section class="content">
-            <div class="mb-4">
-                <h2 class="page-title">
-                    Data Penjualan
-                </h2>
-                <p>Kelola dan pantau transaksi</p>
-            </div>
-
-            <div class="row g-4 mb-4">
-
-                <!-- Penjualan -->
-
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <div class="stat-title">
-                                    Total Penjualan
-                                </div>
-                                <p class="stat-value">
-                                    <?php
-                                    $penjualan = mysqli_query($conn, "SELECT SUM(total) as total FROM transactions");
-                                    $row = mysqli_fetch_assoc($penjualan);
-                                    echo "Rp. " . number_format($row['total'], 0, ',', '.');
-                                    ?>
-                                </p>
-
-                            </div>
-                            <div class="stat-icon bg-primary-subtle text-primary">
-                                <i class="bi bi-cart-check"></i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <div class="mb-4">
+                    <h2 class="page-title">
+                        Data Pembelian
+                    </h2>
+                    <p>Kelola dan pantau pembelian</p>
                 </div>
-
-
-                <!-- Pendapatan -->
-
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <div class="stat-title">
-                                    Total Transaksi
-                                </div>
-                                <p class="stat-value">
-                                    <?php
-                                    $transaksi = mysqli_query($conn, "SELECT * FROM transactions");
-                                    echo mysqli_num_rows($transaksi);
-                                    ?>
-                                </p>
-                            </div>
-                            <div class="stat-icon bg-success-subtle text-success">
-                                <i class="bi bi-cash-stack"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pelanggan -->
-
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="stat-card">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <div class="stat-title">
-                                    Rata-Rata Transaksi
-                                </div>
-                                <p class="stat-value">
-                                    <?php
-                                    $rata_rata = 0;
-                                    if ($row['total'] != 0) {
-                                        $rata_rata = mysqli_num_rows($transaksi) / $row['total'];
-                                        echo Rp. number_format($rata_rata, 0, ',', '.');
-                                    } else {
-                                        echo "Rp. 0";
-                                    }
-                                    ?>
-                                </p>
-
-                            </div>
-                            <div class="stat-icon bg-info-subtle text-info">
-                                <i class="bi bi-people"></i>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Tambah Pembelian<i class="bi bi-person-plus-fill m-2"></i>
                 </div>
             </div>
 
-            <div>
+            <div class="row g-3 mb-4">
 
-                <div class="filter-card">
-                   
+                <!-- SEARCH BAR -->
+                <div class="search-wrapper">
 
-                   <form action="" method="GET">
-                     <!-- SEARCH BAR -->
-                     <div class="search-wrapper">
-                    
-                         <i class="bi bi-search search-icon"></i>
-                    
-                         <input type="text" id="searchInput" class="search-input"
-                             placeholder="Cari transaksi atau kasir..." value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" autocomplete="off">
-                    
-                     </div>
-                    
-                    
-                     <!-- FILTER TANGGAL -->
-                     <div class="date-filter">
-                    
-                         <div class="date-group">
-                    
-                             <label for="dateFrom">
-                                 Dari
-                             </label>
-                    
-                             <input type="date" id="dateFrom" value="<?= htmlspecialchars($_GET['dateFrom'] ?? '') ?>">
-                    
-                         </div>
-                    
-                    
-                         <div class="date-group">
-                    
-                             <label for="dateTo">
-                                 Sampai
-                             </label>
-                    
-                             <input type="date" id="dateTo" value="<?= htmlspecialchars($_GET['dateTo'] ?? '') ?>">
-                    
-                         </div>
-                    
-                    
-                         <button type="submit" class="filter-button btn btn-primary">
-                    
-                             <i class="bi bi-funnel"></i>
-                    
-                             Filter
-                    
-                         </button>
-                    
-                   </form>
+                    <i class="bi bi-search search-icon"></i>
 
-                    <?php
-$search = $_GET['search'] ?? '';
-$dateFrom = $_GET['dateFrom'] ?? '';
-$dateTo = $_GET['dateTo'] ?? '';
+                    <input type="text" id="searchInput" class="search-input" placeholder="Cari transaksi atau kasir..."
+                        autocomplete="off">
 
-$where = [];
+                </div>
 
-if ($search != '') {
-    $search = mysqli_real_escape_string($conn, $search);
 
-    $where[] = "(transactions.invoice_number LIKE '%$search%'
-                OR users.name LIKE '%$search%'
-                OR customers.name LIKE '%$search%')";
-}
+                <!-- FILTER TANGGAL -->
+                <div class="date-filter">
 
-if ($dateFrom != '' && $dateTo != '') {
-    $where[] = "DATE(transactions.created_at) 
-                BETWEEN '$start' AND '$end'";
-}
+                    <div class="date-group">
 
-?>
+                        <label for="dateFrom">
+                            Dari
+                        </label>
+
+                        <input type="date" id="dateFrom">
 
                     </div>
 
+
+                    <div class="date-group">
+
+                        <label for="dateTo">
+                            Sampai
+                        </label>
+
+                        <input type="date" id="dateTo">
+
+                    </div>
+
+
+                    <button type="button" class="filter-button btn btn-primary" onclick="filterData()">
+
+                        <i class="bi bi-funnel"></i>
+
+                        Filter
+
+                    </button>
+
                 </div>
+
+            </div>
 
 
             </div>
@@ -185,8 +82,7 @@ if ($dateFrom != '' && $dateTo != '') {
                     <thead>
                         <tr>
                             <th scope="col">KODE</th>
-                            <th scope="col">PETUGAS</th>
-                            <th scope="col">PELANGGAN</th>
+                            <th scope="col">SUPPLIER</th>
                             <th scope="col">TANGGAL</th>
                             <th scope="col">TOTAL</th>
                             <th scope="col">OPSI</th>
@@ -194,25 +90,8 @@ if ($dateFrom != '' && $dateTo != '') {
                     </thead>
                     <tbody>
                         <?php
-                        $transaksi = mysqli_query($conn, "SELECT
-                                                transactions.id,
-                                                transactions.invoice_number,
-                                                users.name AS cashier,
-                                                customers.name AS customer,
-                                                transactions.total,
-                                                transactions.paid,
-                                                transactions.change_amount,
-                                                transactions.created_at
-                                                FROM transactions
-                                                INNER JOIN users
-                                                ON transactions.user_id = users.id
-
-                                                LEFT JOIN customers
-                                                ON transactions.customer_id = customers.id
-
-                                                ORDER BY transactions.id DESC");
-
-                        $data = mysqli_fetch_all($transaksi, MYSQLI_ASSOC);
+                         $query = mysqli_query($conn, " SELECT purchases.id, purchases.invoice_number, purchases.total, purchases.paid, purchases.created_at, suppliers.name AS supplier, users.name AS user_name FROM purchases INNER JOIN suppliers ON purchases.supplier_id = suppliers.id INNER JOIN users ON purchases.user_id = users.id WHERE purchases.invoice_number");  
+                         $data = mysqli_fetch_all($query, MYSQLI_ASSOC);      
                         ?>
                         <?php foreach ($data as $datas): ?>
                         <tr>
@@ -222,13 +101,15 @@ if ($dateFrom != '' && $dateTo != '') {
                             <td><?= date('d/m/Y', strtotime($datas['created_at'])); ?></td>
                             <td><?= "Rp" . number_format($datas['total'], 0, ',', '.') ?></td>
                             <td>
-                                <a href="delete.php?idTransaksi=<?= $datas['id'] ?>" data-bs-toggle="modal"
+                                <a href="detail.php?idPembelian=<?= $datas['id'] ?>" data-bs-toggle="modal"
                                     data-bs-target="#edit<?= $datas['id'] ?>" class="btn btn-primary p-1"><i
                                         class="bi bi-eye"></i> Detail</a>
 
                                 <div class="modal fade" id="edit<?= $datas['id'] ?>" tabindex="-1"
                                     aria-labelledby="editModalLabel<?= $datas['id'] ?>" aria-hidden="true">
-                                    <div class="modal-dialog"></div>
+                                    <div class="modal-dialog">
+
+                                    </div>
                                     <div class="main-content">
 
                                         <style>
@@ -433,100 +314,99 @@ if ($dateFrom != '' && $dateTo != '') {
                                         }
                                         </style>
 
-                                        <!-- HEADER -->
                                         <div class="page-header no-print">
                                             <div>
-                                                <h1 class="page-title"> Detail Penjualan </h1>
-                                                <p class="page-subtitle"> Informasi lengkap transaksi penjualan </p>
+                                                <h1 class="page-title"> Detail Pembelian </h1>
+                                                <p class="page-subtitle"> Informasi lengkap transaksi pembelian </p>
                                             </div>
-                                            <div class="d-flex gap-2 m-3"> <a href="penjualan.php"
-                                                    class="btn btn-outline-secondary btn-back"> <i
-                                                        class="bi bi-arrow-left"></i> Kembali </a> <button
-                                                    onclick="window.print()" class="btn btn-primary btn-print"> <i
-                                                        class="bi bi-printer"></i> Cetak </button> </div>
-                                        </div> <!-- INFORMASI TRANSAKSI -->
+                                            <div class="d-flex gap-2"> <a href="pembelian.php"
+                                                    class="btn btn-outline-secondary"> <i class="bi bi-arrow-left"></i>
+                                                    Kembali </a> <button onclick="window.print()"
+                                                    class="btn btn-primary"> <i class="bi bi-printer"></i> Cetak
+                                                </button> </div>
+                                        </div> <!-- INFORMASI PEMBELIAN -->
                                         <div class="detail-card">
                                             <div class="invoice-box">
                                                 <div>
                                                     <div class="invoice-number">
-                                                        <?= htmlspecialchars($datas['invoice_number']); ?>
-                                                    </div>
+                                                        <?= htmlspecialchars( $datas['invoice_number'] ); ?> </div>
                                                     <div class="invoice-date"> <i class="bi bi-calendar3"></i>
-                                                        <?= date('d F Y, H:i', strtotime($datas['created_at'])); ?>
+                                                        <?= date( 'd F Y, H:i', strtotime($pembelian['created_at']) ); ?>
                                                     </div>
-                                                </div> <span class="badge-success"> <i class="bi bi-check-circle"></i>
-                                                    Selesai </span>
-                                            </div> <!-- INFORMASI KASIR & CUSTOMER -->
+                                                </div> <span class="status-badge"> <i class="bi bi-box-seam"></i>
+                                                    Pembelian </span>
+                                            </div> <!-- INFO -->
                                             <div class="row">
+                                                <!-- SUPPLIER -->
                                                 <div class="col-md-4">
-                                                    <div class="info-title"> <i class="bi bi-person-badge"></i> Kasir
+                                                    <div class="info-title"> <i class="bi bi-building"></i> Supplier
                                                     </div>
                                                     <div class="info-item">
-                                                        <div class="info-label"> Nama Kasir </div>
+                                                        <div class="info-label"> Nama Supplier </div>
                                                         <div class="info-value">
-                                                            <?= htmlspecialchars($datas['cashier']); ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="info-title"> <i class="bi bi-person"></i> Customer
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <div class="info-label"> Nama Customer </div>
-                                                        <div class="info-value">
-                                                            <?= htmlspecialchars($datas['customer'] ?? 'Umum'); ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="info-title"> <i class="bi bi-telephone"></i> Kontak
+                                                            <?= htmlspecialchars( $pembelian['supplier'] ); ?> </div>
                                                     </div>
                                                     <div class="info-item">
                                                         <div class="info-label"> Nomor Telepon </div>
                                                         <div class="info-value">
-                                                            <?= htmlspecialchars($datas['phone'] ?? '-'); ?>
+                                                            <?= htmlspecialchars( $pembelian['phone'] ?? '-' ); ?>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- ADMIN -->
+                                                <div class="col-md-4">
+                                                    <div class="info-title"> <i class="bi bi-person-badge"></i> Petugas
+                                                    </div>
+                                                    <div class="info-item">
+                                                        <div class="info-label"> Nama </div>
+                                                        <div class="info-value">
+                                                            <?= htmlspecialchars( $pembelian['user_name'] ); ?> </div>
+                                                    </div>
+                                                </div> <!-- ALAMAT -->
+                                                <div class="col-md-4">
+                                                    <div class="info-title"> <i class="bi bi-geo-alt"></i> Alamat
+                                                        Supplier </div>
+                                                    <div class="info-item">
+                                                        <div class="info-label"> Alamat </div>
+                                                        <div class="info-value">
+                                                            <?= htmlspecialchars( $pembelian['address'] ?? '-' ); ?>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div> <!-- DETAIL PRODUK -->
                                         <div class="detail-card">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <div>
-                                                    <h5 class="mb-1 fw-bold"> Detail Produk </h5> <small
-                                                        class="text-muted">
-                                                        Produk yang dibeli dalam transaksi ini </small>
-                                                </div>
+                                            <div class="mb-3">
+                                                <h5 class="fw-bold mb-1"> Detail Produk </h5> <small class="text-muted">
+                                                    Daftar barang yang dibeli dari supplier </small>
                                             </div>
                                             <div class="table-wrapper">
                                                 <table class="table align-middle">
                                                     <thead>
                                                         <tr>
-                                                            <th width="5%"> # </th>
-                                                            <th> Produk </th>
-                                                            <th> Harga </th>
-                                                            <th class="text-center"> Qty </th>
+                                                            <th width="5%">#</th>
+                                                            <th>Produk</th>
+                                                            <th>Harga Beli</th>
+                                                            <th class="text-center"> Quantity </th>
                                                             <th class="text-end"> Subtotal </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php $no = 1;
-                                                            while ($detail = mysqli_fetch_assoc($transaksi)): ?>
+                                                        <?php $no = 1; while ( $detail = mysqli_fetch_assoc( $query_detail ) ): ?>
                                                         <tr>
                                                             <td> <?= $no++; ?> </td>
                                                             <td>
                                                                 <div class="product-name">
-                                                                    <?= htmlspecialchars($detail['product_name']); ?>
+                                                                    <?= htmlspecialchars( $detail['product_name'] ); ?>
                                                                 </div>
                                                                 <div class="product-code"> Kode:
-                                                                    <?= htmlspecialchars($detail['code']); ?>
-                                                                </div>
+                                                                    <?= htmlspecialchars( $detail['code'] ); ?> </div>
                                                             </td>
-                                                            <td> Rp <?= number_format($detail['price'], 0, ',', '.'); ?>
+                                                            <td> Rp
+                                                                <?= number_format( $detail['price'], 0, ',', '.' ); ?>
                                                             </td>
                                                             <td class="text-center"> <?= $detail['quantity']; ?> </td>
                                                             <td class="text-end fw-semibold"> Rp
-                                                                <?= number_format($detail['subtotal'], 0, ',', '.'); ?>
+                                                                <?= number_format( $detail['subtotal'], 0, ',', '.' ); ?>
                                                             </td>
                                                         </tr> <?php endwhile; ?>
                                                     </tbody>
@@ -535,29 +415,41 @@ if ($dateFrom != '' && $dateTo != '') {
                                         </div> <!-- PEMBAYARAN -->
                                         <div class="detail-card">
                                             <div class="payment-box">
-                                                <div class="payment-row"> <span> Total </span> <strong> Rp
-                                                        <?= number_format($datas['total'], 0, ',', '.'); ?>
+                                                <div class="payment-row"> <span> Total Pembelian </span> <strong> Rp
+                                                        <?= number_format( $pembelian['total'], 0, ',', '.' ); ?>
                                                     </strong> </div>
                                                 <div class="payment-row"> <span> Dibayar </span> <span> Rp
-                                                        <?= number_format($datas['paid'], 0, ',', '.'); ?> </span>
+                                                        <?= number_format( $pembelian['paid'], 0, ',', '.' ); ?> </span>
                                                 </div>
-                                                <div class="payment-row chandatas['change_amount'], 0, ',', '.'); ?>
+                                                <div class="payment-row total"> <span> Total </span> <span> Rp
+                                                        <?= number_format( $pembelian['total'], 0, ',', '.' ); ?>
+                                                    </span> </div>
+                                            </div>
+                                        </div>
+                                        <div class="payment-box">
+                                            <div class="payment-row"> <span> Total </span> <strong> Rp
+                                                    <?= number_format($datas['total'], 0, ',', '.'); ?>
+                                                </strong> </div>
+                                            <div class="payment-row"> <span> Dibayar </span> <span> Rp
+                                                    <?= number_format($datas['paid'], 0, ',', '.'); ?> </span>
+                                            </div>
+                                            <div class="payment-row chandatas['change_amount'], 0, ',', '.'); ?>
                                                         </span> </div>
                                                     <div class=" payment-row total"> <span> Total Pembayaran </span>
-                                                    <span>
-                                                        Rp
-                                                        <?= number_format($datas['total'], 0, ',', '.'); ?>
-                                                    </span>
-                                                </div>
+                                                <span>
+                                                    Rp
+                                                    <?= number_format($datas['total'], 0, ',', '.'); ?>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+            </div>
+            </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+            </table>
             </div>
 
         </section>
