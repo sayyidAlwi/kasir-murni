@@ -7,17 +7,34 @@
 <!-- CSS link -->
 <link rel="stylesheet" href="../assets/css/style.css">
 
+<script src="<?= BASE_URL ?>/assets/js/script.js"></script>
+
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<?php
+$settingsMessage = '';
+$storeNameResult = mysqli_query($conn, "SELECT setting_value FROM app_settings WHERE setting_key = 'store_name'");
+$storeNameRow = mysqli_fetch_assoc($storeNameResult);
+$storeName = $storeNameRow['setting_value'] ?? 'KasirDoelim';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
+    $newStoreName = trim($_POST['store_name'] ?? '');
+    $newStoreName = $newStoreName !== '' ? $newStoreName : 'KasirDoelim';
+    $statement = mysqli_prepare($conn, "INSERT INTO app_settings (setting_key, setting_value) VALUES ('store_name', ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
+    mysqli_stmt_bind_param($statement, 's', $newStoreName);
+    mysqli_stmt_execute($statement);
+    mysqli_stmt_close($statement);
+    $storeName = $newStoreName;
+    $settingsMessage = 'Pengaturan berhasil disimpan.';
+}
+?>
 
 <aside class="sidebar" id="sidebar">
 
     <a href="index.php" class="sidebar-brand">
         <i class="bi bi-shop"></i>
-        <?php 
-        $namaKasir = $_POST['namakasir'];
-        echo $namaKasir;
-        ?>
+        <?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>
     </a>
 
     <div class="sidebar-menu">
@@ -79,9 +96,9 @@
         </a>
 
         <a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">
-                                    <i class="bi bi-gear"></i>
-                                    <span>Pengaturan</span>
-                                </a>
+            <i class="bi bi-gear"></i>
+            <span>Pengaturan</span>
+        </a>
 
         <a href="../auth/logout.php" class="text-danger">
             <i class="bi bi-box-arrow-right"></i>
@@ -102,18 +119,26 @@
                     aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <?php if ($settingsMessage !== ''): ?>
+                    <div class="alert alert-success py-2" role="alert">
+                        <?= htmlspecialchars($settingsMessage, ENT_QUOTES, 'UTF-8') ?>
+                    </div>
+                <?php endif; ?>
                 <form action="" method="POST">
-                    <div class="form-group">
-                        <label for="">Tema</label>
-                        <select class="form-select" name="tema" id="">
-                            <option value="light">Light <i class="bi bi-lightbulb-fill"></i></option>
-                            <option value="dark">Dark <i class="bi bi-lightbulb-off"></i></option>
+                    <div class="mb-3">
+                        <label class="form-label" for="themeselect">Tema</label>
+                        <select class="form-select" id="themeselect">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="">Nama Toko</label>
-                        <input type="text" name="namakasir" value="<?= $pelanggan ?>">
+                    <div class="mb-3">
+                        <label class="form-label" for="store_name">Nama Toko</label>
+                        <input class="form-control" type="text" id="store_name" name="store_name" value="<?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>
                     </div>
+                    <button class="btn btn-primary" type="submit" name="save_settings" value="1">
+                        Simpan Pengaturan
+                    </button>
                 </form>
             </div>
         </div>

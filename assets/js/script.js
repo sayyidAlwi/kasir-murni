@@ -51,22 +51,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const sidebarToggle = document.getElementById("sidebarToggle");
 const sidebar = document.getElementById("sidebar");
-sidebarToggle.addEventListener("click", function () {
-  sidebar.classList.toggle("show");
-});
-const searchInput = document.getElementById("searchInput");
-searchInput.addEventListener("keyup", function () {
-  const keyword = this.value.toLowerCase();
-  const rows = document.querySelectorAll("#salesTable tr");
-  rows.forEach(function (row) {
-    const text = row.textContent.toLowerCase();
-    if (text.includes(keyword)) {
-      row.style.display = "";
-    } else {
-      row.style.display = "none";
-    }
+if (sidebarToggle && sidebar) {
+  sidebarToggle.addEventListener("click", function () {
+    sidebar.classList.toggle("show");
   });
-});
+}
+const searchInput = document.getElementById("searchInput");
+if (searchInput) {
+  searchInput.addEventListener("keyup", function () {
+    const keyword = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#salesTable tr");
+    rows.forEach(function (row) {
+      row.style.display = row.textContent.toLowerCase().includes(keyword) ? "" : "none";
+    });
+  });
+}
 function filterData() {
   const from = document.getElementById("dateFrom").value;
   const to = document.getElementById("dateTo").value;
@@ -75,4 +74,30 @@ function filterData() {
     return;
   }
   alert("Filter tanggal: " + (from || "-") + " sampai " + (to || "-"));
+}
+
+function initializeTheme() {
+  const themeselect = document.getElementById("themeselect");
+  const savedtheme = localStorage.getItem("theme") || "light";
+
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(savedtheme);
+
+  if (!themeselect) {
+    return;
+  }
+
+  themeselect.value = savedtheme;
+  themeselect.addEventListener("change", function () {
+    const theme = this.value;
+    document.body.classList.remove("light", "dark");
+    document.body.classList.add(theme);
+    localStorage.setItem("theme", theme);
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeTheme);
+} else {
+  initializeTheme();
 }
