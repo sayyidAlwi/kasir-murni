@@ -6,7 +6,8 @@
 
 <!-- CSS link -->
 <link rel="stylesheet" href="../assets/css/style.css">
-
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/script.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 
 <!-- Bootstrap Icons -->
