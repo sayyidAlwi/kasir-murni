@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
         </div>
 
         <?php
-            $currentPage = basename($_SERVER['PHP_SELF']);
+        $currentPage = basename($_SERVER['PHP_SELF']);
         ?>
 
         <a href="<?= BASE_URL ?>admin/index.php" class="<?= $currentPage == 'index.php' ? 'active' : '' ?>">
@@ -132,6 +132,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
                             <option value="dark">Dark</option>
                         </select>
                     </div>
+                    <section class="settings-languange">
+                        <label class="language-label" for="languageselect">Bahasa</label>
+                        <select id="LanguageSelect">
+                            <option value="id">ID Bahasa</option>
+                            <option value="en">GB English</option>
+                            <option value="ja">JP 日本語</option>
+                        </select>
+                    </section>
+
                     <div class="mb-3">
                         <label class="form-label" for="store_name">Nama Toko</label>
                         <input class="form-control" type="text" id="store_name" name="store_name" value="<?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>

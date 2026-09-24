@@ -88,7 +88,7 @@
                     <li>
                         <a
                             class="dropdown-item"
-                            href="profil.php"
+                            href="<?= BASE_URL ?>admin/profil.php"
                         >
                             <i class="bi bi-person me-2"></i>
                             Profil
