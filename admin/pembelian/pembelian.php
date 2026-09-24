@@ -3,6 +3,12 @@ session_start();
 include '../../config/database.php';
 include '../../includes/header.php';
 include '../../includes/sidebar.php';
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$dateFrom = isset($_GET['dateFrom']) ? $_GET['dateFrom'] : '';
+$dateTo = isset($_GET['dateTo']) ? $_GET['dateTo'] : '';
+
+$suppliers = mysqli_query($conn, "SELECT id, name FROM suppliers ORDER BY name ASC");
 ?>
 
 <!DOCTYPE html>
@@ -19,59 +25,74 @@ include '../../includes/sidebar.php';
                     <p>Kelola dan pantau pembelian</p>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit">
                         Tambah Pembelian<i class="bi bi-person-plus-fill m-2"></i>
+                    </button>
+
+                    <div class="modal fade" id="edit" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Pembelian</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="create.php" method="post">
+                                        <div class="mb-3">
+                                            <label for="supplier" class="form-label">Supplier</label>
+                                            <select class="form-select" id="supplier" name="supplier_id" required>
+                                                <option value="">Pilih Supplier</option>
+                                                <?php while ($supplier = mysqli_fetch_assoc($suppliers)) : ?>
+                                                    <option value="<?= $supplier['id'] ?>"><?= htmlspecialchars($supplier['name']) ?></option>
+                                                <?php endwhile; ?>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Tanggal</label>
+                                            <input type="date" class="form-control" id="date" name="date" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="total" class="form-label">Total</label>
+                                            <input type="number" class="form-control" id="total" name="total" min="1" step="0.01" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="create" class="btn btn-primary">Tambah</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="row g-3 mb-4">
-
-                <!-- SEARCH BAR -->
-                <div class="search-wrapper">
-
-                    <i class="bi bi-search search-icon"></i>
-
-                    <input type="text" id="searchInput" class="search-input" placeholder="Cari transaksi atau kasir..."
-                        autocomplete="off">
-
-                </div>
-
-
-                <!-- FILTER TANGGAL -->
-                <div class="date-filter">
-
-                    <div class="date-group">
-
-                        <label for="dateFrom">
-                            Dari
-                        </label>
-
-                        <input type="date" id="dateFrom">
-
+                <form action="" method="GET" class="d-flex flex-column flex-md-row gap-3 align-items-center w-100">
+                    <!-- SEARCH BAR -->
+                    <div class="search-wrapper flex-grow-1">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" name="search" id="searchInput" class="search-input" placeholder="Cari kode atau supplier..." value="<?= htmlspecialchars($search) ?>" autocomplete="off">
                     </div>
 
+                    <!-- FILTER TANGGAL -->
+                    <div class="date-filter">
+                        <div class="date-group">
+                            <label for="dateFrom">Dari</label>
+                            <input type="date" name="dateFrom" id="dateFrom" value="<?= htmlspecialchars($dateFrom) ?>">
+                        </div>
 
-                    <div class="date-group">
+                        <div class="date-group">
+                            <label for="dateTo">Sampai</label>
+                            <input type="date" name="dateTo" id="dateTo" value="<?= htmlspecialchars($dateTo) ?>">
+                        </div>
 
-                        <label for="dateTo">
-                            Sampai
-                        </label>
-
-                        <input type="date" id="dateTo">
-
+                        <button type="submit" class="filter-button btn btn-primary">
+                            <i class="bi bi-funnel"></i> Filter
+                        </button>
                     </div>
-
-
-                    <button type="button" class="filter-button btn btn-primary" onclick="filterData()">
-
-                        <i class="bi bi-funnel"></i>
-
-                        Filter
-
-                    </button>
-
-                </div>
-
+                </form>
             </div>
 
 
@@ -90,367 +111,59 @@ include '../../includes/sidebar.php';
                     </thead>
                     <tbody>
                         <?php
-                         $query = mysqli_query($conn, " SELECT purchases.id, purchases.invoice_number, purchases.total, purchases.paid, purchases.created_at, suppliers.name AS supplier, users.name AS user_name FROM purchases INNER JOIN suppliers ON purchases.supplier_id = suppliers.id INNER JOIN users ON purchases.user_id = users.id WHERE purchases.invoice_number");  
-                         $data = mysqli_fetch_all($query, MYSQLI_ASSOC);      
+                        $where = [];
+
+                        if ($search !== '') {
+                            $searchEsc = mysqli_real_escape_string($conn, $search);
+                            $where[] = "(p.invoice_number LIKE '%{$searchEsc}%' OR s.name LIKE '%{$searchEsc}%')";
+                        }
+
+                        if ($dateFrom !== '') {
+                            $dateFromEsc = mysqli_real_escape_string($conn, $dateFrom);
+                            $where[] = "DATE(p.created_at) >= '$dateFromEsc'";
+                        }
+
+                        if ($dateTo !== '') {
+                            $dateToEsc = mysqli_real_escape_string($conn, $dateTo);
+                            $where[] = "DATE(p.created_at) <= '$dateToEsc'";
+                        }
+
+                        $sql = "SELECT p.id, p.invoice_number, p.total, p.paid, p.created_at, s.name AS supplier_name
+                                FROM purchases p
+                                INNER JOIN suppliers s ON p.supplier_id = s.id";
+
+                        if (!empty($where)) {
+                            $sql .= " WHERE " . implode(' AND ', $where);
+                        }
+
+                        $sql .= " ORDER BY p.created_at DESC";
+                        $query = mysqli_query($conn, $sql);
+
+                        if ($query && mysqli_num_rows($query) > 0) {
+                            while ($data = mysqli_fetch_assoc($query)) {
                         ?>
-                        <?php foreach ($data as $datas): ?>
-                        <tr>
-                            <th><?= $datas['invoice_number'] ?></th>
-                            <td><?= $datas['cashier'] ?></td>
-                            <td><?= $datas['customer'] ?? 'umum' ?></td>
-                            <td><?= date('d/m/Y', strtotime($datas['created_at'])); ?></td>
-                            <td><?= "Rp" . number_format($datas['total'], 0, ',', '.') ?></td>
-                            <td>
-                                <a href="detail.php?idPembelian=<?= $datas['id'] ?>" data-bs-toggle="modal"
-                                    data-bs-target="#edit<?= $datas['id'] ?>" class="btn btn-primary p-1"><i
-                                        class="bi bi-eye"></i> Detail</a>
-
-                                <div class="modal fade" id="edit<?= $datas['id'] ?>" tabindex="-1"
-                                    aria-labelledby="editModalLabel<?= $datas['id'] ?>" aria-hidden="true">
-                                    <div class="modal-dialog">
-
-                                    </div>
-                                    <div class="main-content">
-
-                                        <style>
-                                        /* HEADER */
-                                        .page-header {
-                                            display: flex;
-                                            justify-content: space-between;
-                                            align-items: center;
-                                            margin-bottom: 25px;
-                                            background-color: #fdfdfd;
-                                            border-radius: 10px;
-                                            padding: 25px;
-                                            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-                                            margin-bottom: 20px;
-                                        }
-
-                                        .page-title {
-                                            font-size: 28px;
-                                            font-weight: 700;
-                                        }
-
-                                        .page-subtitle {
-                                            color: #030303;
-                                            margin-top: 5px;
-                                            font-weight: 600;
-                                        }
-
-                                        /* CARD */
-                                        .detail-card {
-
-                                            background: white;
-                                            border: none;
-                                            border-radius: 14px;
-                                            padding: 25px;
-                                            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-                                            margin-bottom: 20px;
-                                        }
-
-                                        /* TRANSACTION INFO */
-                                        .invoice-box {
-                                            display: flex;
-                                            justify-content: space-between;
-                                            align-items: center;
-                                            padding-bottom: 20px;
-                                            border-bottom: 1px solid #eee;
-                                            margin-bottom: 20px;
-                                        }
-
-                                        .invoice-number {
-                                            font-size: 24px;
-                                            font-weight: 700;
-                                        }
-
-                                        .invoice-date {
-                                            color: #6c757d;
-                                            font-size: 14px;
-                                            margin-top: 5px;
-                                        }
-
-                                        .badge-success {
-                                            background: #d1fae5;
-                                            color: #047857;
-                                            padding: 8px 14px;
-                                            border-radius: 20px;
-                                            font-weight: 600;
-                                        }
-
-                                        /* INFO */
-                                        .info-title {
-                                            font-size: 15px;
-                                            font-weight: 700;
-                                            margin-bottom: 15px;
-                                        }
-
-                                        .info-item {
-                                            margin-bottom: 12px;
-                                        }
-
-                                        .info-label {
-                                            font-size: 13px;
-                                            color: #6c757d;
-                                            margin-bottom: 3px;
-                                        }
-
-                                        .info-value {
-                                            font-weight: 600;
-                                        }
-
-                                        /* TABLE */
-                                        .table thead th {
-                                            background: #f8f9fa;
-                                            border-bottom: none;
-                                            font-size: 13px;
-                                            color: #6c757d;
-                                            text-transform: uppercase;
-                                            padding: 15px;
-                                        }
-
-                                        .table tbody td {
-                                            padding: 16px 15px;
-                                            vertical-align: middle;
-                                        }
-
-                                        .product-code {
-                                            font-size: 13px;
-                                            color: #6c757d;
-                                        }
-
-                                        .product-name {
-                                            font-weight: 600;
-                                        }
-
-                                        /* TOTAL */
-                                        .payment-box {
-                                            max-width: 450px;
-                                            margin-left: auto;
-                                        }
-
-                                        .payment-row {
-                                            display: flex;
-                                            justify-content: space-between;
-                                            padding: 8px 0;
-                                        }
-
-                                        .payment-row.total {
-                                            font-size: 20px;
-                                            font-weight: 700;
-                                            border-top: 1px solid #eee;
-                                            margin-top: 10px;
-                                            padding-top: 15px;
-                                        }
-
-                                        .payment-row.change {
-                                            color: #198754;
-                                            font-weight: 600;
-                                        }
-
-                                        /* BUTTON */
-                                        .btn-back {
-                                            border-radius: 8px;
-                                        }
-
-                                        .btn-print {
-                                            border-radius: 8px;
-                                        }
-
-                                        /* RESPONSIVE */
-                                        @media (max-width: 992px) {
-                                            .main-content {
-                                                margin-left: 0;
-                                                padding: 20px;
-                                            }
-                                        }
-
-                                        @media (max-width: 576px) {
-                                            .main-content {
-                                                padding: 15px;
-                                            }
-
-                                            .page-header {
-                                                align-items: flex-start;
-                                                flex-direction: column;
-                                                gap: 15px;
-                                            }
-
-                                            .invoice-box {
-                                                flex-direction: column;
-                                                align-items: flex-start;
-                                                gap: 15px;
-                                            }
-
-                                            .detail-card {
-                                                padding: 18px;
-                                            }
-
-                                            .table {
-                                                min-width: 700px;
-                                            }
-
-                                            .table-wrapper {
-                                                overflow-x: auto;
-                                            }
-                                        }
-
-                                        @media print {
-                                            body {
-                                                background: white;
-                                            }
-
-                                            .no-print {
-                                                display: none !important;
-                                            }
-
-                                            .main-content {
-                                                margin-left: 0;
-                                                padding: 0;
-                                            }
-
-                                            .detail-card {
-                                                box-shadow: none;
-                                            }
-                                        }
-                                        </style>
-
-                                        <div class="page-header no-print">
-                                            <div>
-                                                <h1 class="page-title"> Detail Pembelian </h1>
-                                                <p class="page-subtitle"> Informasi lengkap transaksi pembelian </p>
-                                            </div>
-                                            <div class="d-flex gap-2"> <a href="pembelian.php"
-                                                    class="btn btn-outline-secondary"> <i class="bi bi-arrow-left"></i>
-                                                    Kembali </a> <button onclick="window.print()"
-                                                    class="btn btn-primary"> <i class="bi bi-printer"></i> Cetak
-                                                </button> </div>
-                                        </div> <!-- INFORMASI PEMBELIAN -->
-                                        <div class="detail-card">
-                                            <div class="invoice-box">
-                                                <div>
-                                                    <div class="invoice-number">
-                                                        <?= htmlspecialchars( $datas['invoice_number'] ); ?> </div>
-                                                    <div class="invoice-date"> <i class="bi bi-calendar3"></i>
-                                                        <?= date( 'd F Y, H:i', strtotime($pembelian['created_at']) ); ?>
-                                                    </div>
-                                                </div> <span class="status-badge"> <i class="bi bi-box-seam"></i>
-                                                    Pembelian </span>
-                                            </div> <!-- INFO -->
-                                            <div class="row">
-                                                <!-- SUPPLIER -->
-                                                <div class="col-md-4">
-                                                    <div class="info-title"> <i class="bi bi-building"></i> Supplier
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <div class="info-label"> Nama Supplier </div>
-                                                        <div class="info-value">
-                                                            <?= htmlspecialchars( $pembelian['supplier'] ); ?> </div>
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <div class="info-label"> Nomor Telepon </div>
-                                                        <div class="info-value">
-                                                            <?= htmlspecialchars( $pembelian['phone'] ?? '-' ); ?>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- ADMIN -->
-                                                <div class="col-md-4">
-                                                    <div class="info-title"> <i class="bi bi-person-badge"></i> Petugas
-                                                    </div>
-                                                    <div class="info-item">
-                                                        <div class="info-label"> Nama </div>
-                                                        <div class="info-value">
-                                                            <?= htmlspecialchars( $pembelian['user_name'] ); ?> </div>
-                                                    </div>
-                                                </div> <!-- ALAMAT -->
-                                                <div class="col-md-4">
-                                                    <div class="info-title"> <i class="bi bi-geo-alt"></i> Alamat
-                                                        Supplier </div>
-                                                    <div class="info-item">
-                                                        <div class="info-label"> Alamat </div>
-                                                        <div class="info-value">
-                                                            <?= htmlspecialchars( $pembelian['address'] ?? '-' ); ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> <!-- DETAIL PRODUK -->
-                                        <div class="detail-card">
-                                            <div class="mb-3">
-                                                <h5 class="fw-bold mb-1"> Detail Produk </h5> <small class="text-muted">
-                                                    Daftar barang yang dibeli dari supplier </small>
-                                            </div>
-                                            <div class="table-wrapper">
-                                                <table class="table align-middle">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="5%">#</th>
-                                                            <th>Produk</th>
-                                                            <th>Harga Beli</th>
-                                                            <th class="text-center"> Quantity </th>
-                                                            <th class="text-end"> Subtotal </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php $no = 1; while ( $detail = mysqli_fetch_assoc( $query_detail ) ): ?>
-                                                        <tr>
-                                                            <td> <?= $no++; ?> </td>
-                                                            <td>
-                                                                <div class="product-name">
-                                                                    <?= htmlspecialchars( $detail['product_name'] ); ?>
-                                                                </div>
-                                                                <div class="product-code"> Kode:
-                                                                    <?= htmlspecialchars( $detail['code'] ); ?> </div>
-                                                            </td>
-                                                            <td> Rp
-                                                                <?= number_format( $detail['price'], 0, ',', '.' ); ?>
-                                                            </td>
-                                                            <td class="text-center"> <?= $detail['quantity']; ?> </td>
-                                                            <td class="text-end fw-semibold"> Rp
-                                                                <?= number_format( $detail['subtotal'], 0, ',', '.' ); ?>
-                                                            </td>
-                                                        </tr> <?php endwhile; ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div> <!-- PEMBAYARAN -->
-                                        <div class="detail-card">
-                                            <div class="payment-box">
-                                                <div class="payment-row"> <span> Total Pembelian </span> <strong> Rp
-                                                        <?= number_format( $pembelian['total'], 0, ',', '.' ); ?>
-                                                    </strong> </div>
-                                                <div class="payment-row"> <span> Dibayar </span> <span> Rp
-                                                        <?= number_format( $pembelian['paid'], 0, ',', '.' ); ?> </span>
-                                                </div>
-                                                <div class="payment-row total"> <span> Total </span> <span> Rp
-                                                        <?= number_format( $pembelian['total'], 0, ',', '.' ); ?>
-                                                    </span> </div>
-                                            </div>
-                                        </div>
-                                        <div class="payment-box">
-                                            <div class="payment-row"> <span> Total </span> <strong> Rp
-                                                    <?= number_format($datas['total'], 0, ',', '.'); ?>
-                                                </strong> </div>
-                                            <div class="payment-row"> <span> Dibayar </span> <span> Rp
-                                                    <?= number_format($datas['paid'], 0, ',', '.'); ?> </span>
-                                            </div>
-                                            <div class="payment-row chandatas['change_amount'], 0, ',', '.'); ?>
-                                                        </span> </div>
-                                                    <div class=" payment-row total"> <span> Total Pembayaran </span>
-                                                <span>
-                                                    Rp
-                                                    <?= number_format($datas['total'], 0, ',', '.'); ?>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-            </div>
-            </td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-            </table>
-            </div>
+                                <tr>
+                                    <th><?= htmlspecialchars($data['invoice_number']) ?></th>
+                                    <td><?= htmlspecialchars($data['supplier_name']) ?></td>
+                                    <td><?= date('d/m/Y', strtotime($data['created_at'])) ?></td>
+                                    <td><?= 'Rp' . number_format((float) $data['total'], 0, ',', '.') ?></td>
+                                    <td>
+                                        <a href="detail.php?idPembelian=<?= $data['id'] ?>" class="btn btn-primary p-1">
+                                            <i class="bi bi-eye"></i> Detail
+                                        </a>
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        } else {
+                        ?>
+                            <tr>
+                                <td colspan="5" class="text-center">Belum ada data pembelian</td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
 
         </section>
     </main>

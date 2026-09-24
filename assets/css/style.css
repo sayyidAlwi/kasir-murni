@@ -484,3 +484,202 @@ body {
 }
 
 
+/* HEADER */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background-color: #fdfdfd;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: #030303;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+/* CARD */
+.detail-card {
+
+    background: white;
+    border: none;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+/* TRANSACTION INFO */
+.invoice-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.invoice-number {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.invoice-date {
+    color: #6c757d;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.badge-success {
+    background: #d1fae5;
+    color: #047857;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* INFO */
+.info-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.info-item {
+    margin-bottom: 12px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.info-value {
+    font-weight: 600;
+}
+
+/* TABLE */
+.table thead th {
+    background: #f8f9fa;
+    border-bottom: none;
+    font-size: 13px;
+    color: #6c757d;
+    text-transform: uppercase;
+    padding: 15px;
+}
+
+.table tbody td {
+    padding: 16px 15px;
+    vertical-align: middle;
+}
+
+.product-code {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.product-name {
+    font-weight: 600;
+}
+
+/* TOTAL */
+.payment-box {
+    max-width: 450px;
+    margin-left: auto;
+}
+
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.payment-row.total {
+    font-size: 20px;
+    font-weight: 700;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+.payment-row.change {
+    color: #198754;
+    font-weight: 600;
+}
+
+/* BUTTON */
+.btn-back {
+    border-radius: 8px;
+}
+
+.btn-print {
+    border-radius: 8px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        padding: 15px;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .invoice-box {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .detail-card {
+        padding: 18px;
+    }
+
+    .table {
+        min-width: 700px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+
+@media print {
+    body {
+        background: white;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .detail-card {
+        box-shadow: none;
+    }
+}

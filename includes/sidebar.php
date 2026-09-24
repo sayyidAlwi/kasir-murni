@@ -14,10 +14,7 @@
 
     <a href="index.php" class="sidebar-brand">
         <i class="bi bi-shop"></i>
-        <?php 
-        $namaKasir = $_POST['namakasir'];
-        echo $namaKasir;
-        ?>
+        KasirJorok
     </a>
 
     <div class="sidebar-menu">
