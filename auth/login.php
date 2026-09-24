@@ -6,7 +6,7 @@ $username = $_POST["username"];
 $password = $_POST["password"];
 
 
-$login = mysqli_query($conn, "SELECT * FROM users where username = '$username' AND password = '$password' AND role");
+$login = mysqli_query($conn, "SELECT * FROM users where username = '$username' AND password = '$password' LIMIT 1");
 $cek = mysqli_num_rows($login);
 
 
@@ -21,7 +21,7 @@ if ($cek > 0) {
         session_start();
         $_SESSION['id'] = $data['id'];
         $_SESSION['role'] = $data['role'];
-        header("location:../admin/index.php");
+        header("location:../kasir/index.php");
     } 
 } else {
     header("location:../index.php");

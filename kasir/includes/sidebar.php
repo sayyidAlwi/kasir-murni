@@ -62,52 +62,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
         $currentPage = basename($_SERVER['PHP_SELF']);
         ?>
 
-        <a href="<?= BASE_URL ?>admin/index.php" class="<?= $currentPage == 'index.php' ? 'active' : '' ?>">
-            <i class="bi bi-grid-1x2-fill"></i>
-            <span>Dashboard</span>
+        <a href="<?= BASE_URL ?>kasir/index.php" class="<?= $currentPage == 'index.php' ? 'active' : '' ?>">
+            <i class="bi bi-cart-plus"></i>
+            <span>Kasir</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/produk/produk.php" class="<?= $currentPage == 'produk.php' ? 'active' : '' ?>">
+        <a href="<?= BASE_URL ?>kasir/produk/produk.php" class="<?= $currentPage == 'produk.php' ? 'active' : '' ?>">
             <i class="bi bi-box-seam"></i>
-            <span>Produk</span>
+            <span>Produk & Stok</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/kategori/kategori.php">
+        <a href="<?= BASE_URL ?>kasir/riwayat/riwayat.php">
             <i class="bi bi-tags"></i>
-            <span>Kategori</span>
+            <span>Riwayat Transaksi</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/pelanggan/pelanggan.php">
+        <a href="<?= BASE_URL ?>kasir/laporan/laporan.php">
             <i class="bi bi-people"></i>
-            <span>Pelanggan</span>
+            <span>Laporan</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/supplier/supplier.php">
+        <a href="<?= BASE_URL ?>kasir/pengeluaran/pengeluaran.php">
             <i class="bi bi-truck"></i>
-            <span>Supplier</span>
-        </a>
-
-        <div class="menu-title mt-3">
-            Transaksi
-        </div>
-
-        <a href="<?= BASE_URL ?>admin/penjualan/penjualan.php">
-            <i class="bi bi-cart3"></i>
-            <span>Penjualan</span>
-        </a>
-
-        <a href="<?= BASE_URL ?>admin/pembelian/pembelian.php">
-            <i class="bi bi-bag-plus"></i>
-            <span>Pembelian</span>
-        </a>
-
-        <div class="menu-title mt-3">
-            Sistem
-        </div>
-
-        <a href="<?= BASE_URL ?>admin/pengguna/pengguna.php">
-            <i class="bi bi-person-gear"></i>
-            <span>Pengguna</span>
+            <span>Pengeluaran</span>
         </a>
 
         <a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">

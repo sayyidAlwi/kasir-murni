@@ -69,7 +69,7 @@ $suppliers = mysqli_query($conn, "SELECT id, name FROM suppliers ORDER BY name A
             </div>
 
             <div class="row g-3 mb-4">
-                <form action="" method="GET" class="d-flex flex-column flex-md-row gap-3 align-items-center w-100">
+                <form action="" method="GET" class="d-flex flex-column gap-3 w-100">
                     <!-- SEARCH BAR -->
                     <div class="search-wrapper flex-grow-1">
                         <i class="bi bi-search search-icon"></i>
