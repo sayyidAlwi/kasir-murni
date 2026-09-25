@@ -79,11 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             <span>Laporan</span>
         </a>
 
-        <a href="<?= BASE_URL ?>kasir/pengeluaran/pengeluaran.php">
-            <i class="bi bi-truck"></i>
-            <span>Pengeluaran</span>
-        </a>
-
         <a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">
             <i class="bi bi-gear"></i>
             <span>Pengaturan</span>
