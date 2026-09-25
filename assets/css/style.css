@@ -27,7 +27,7 @@ body {
     overscroll-behavior: contain;
     touch-action: pan-y;
     background: var(--sidebar);
-    z-index: 1050;
+    z-index: 1030;
     transition: transform 0.35s ease, background-color 0.35s ease;
 }
 
@@ -150,7 +150,6 @@ body {
 .content {
     padding: 30px 25px;
     color: var(--text);
-    animation: contentEnter 0.45s ease both;
 }
 
 .page-title {
@@ -292,7 +291,7 @@ body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.4);
-    z-index: 1040;
+    z-index: 1000;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -524,7 +523,7 @@ body {
 
 /* Dark Mode */
 body.dark {
-     --bg: #121212;
+    --bg: #121212;
     --text: #eeeeee;
     --sidebar: #080a0c;
     --card: #1e1e1e;
@@ -609,6 +608,7 @@ body,
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

@@ -700,8 +700,8 @@ function openPayment() {
         change.textContent = 'Rp 0';
     }
 
-    if (paymentModalEl && window.bootstrap) {
-        const paymentModal = new bootstrap.Modal(paymentModalEl);
+    if (paymentModalEl && window.bootstrap && bootstrap.Modal) {
+        const paymentModal = bootstrap.Modal.getOrCreateInstance(paymentModalEl);
         paymentModal.show();
     }
 }
@@ -760,8 +760,9 @@ function processPayment() {
 
             showPaymentNotification('Transaksi berhasil! No. Invoice: ' + data.invoice_number, 'success');
 
-            if (window.bootstrap) {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            if (window.bootstrap && bootstrap.Modal) {
+                const modalEl = document.getElementById('paymentModal');
+                const modal = modalEl ? bootstrap.Modal.getOrCreateInstance(modalEl) : null;
                 if (modal) {
                     modal.hide();
                 }

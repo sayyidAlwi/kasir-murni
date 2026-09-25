@@ -8,7 +8,7 @@
 
 <?php 
     include "../../includes/header.php";
-    include "../../includes/sidebar.php";
+    include "../includes/sidebar.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">

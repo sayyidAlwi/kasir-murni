@@ -2,13 +2,9 @@
      SIDEBAR
 ===================================================== -->
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- CSS link -->
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="assets/css/style.css">
-<script src="assets/js/script.js"></script>
-<script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -73,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             <span>Produk & Stok</span>
         </a>
 
-        <a href="<?= BASE_URL ?>kasir/riwayat/riwayat.php">
+        <a href="<?= BASE_URL ?>kasir/penjualan/penjualan.php">
             <i class="bi bi-tags"></i>
             <span>Riwayat Transaksi</span>
         </a>
@@ -148,4 +144,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
 </div>
 
 <!-- Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
