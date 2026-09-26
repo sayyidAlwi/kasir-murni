@@ -6,6 +6,7 @@
     >
 
     <!-- CSS link -->
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 
     <!-- Bootstrap Icons -->
@@ -56,21 +57,6 @@
         <!-- RIGHT TOPBAR -->
 
         <div class="d-flex align-items-center gap-3">
-
-            <!-- Notification -->
-
-            <button
-                class="btn btn-light position-relative"
-                type="button"
-            >
-                <i class="bi bi-bell fs-5"></i>
-
-                <span
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >
-                    3
-                </span>
-            </button>
 
 
             <!-- Profile -->

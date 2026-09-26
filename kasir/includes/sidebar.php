@@ -2,9 +2,6 @@
      SIDEBAR
 ===================================================== -->
 
-<!-- CSS link -->
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="assets/css/style.css">
 
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -15,10 +12,6 @@ $settingsMessage = '';
 $storeNameResult = mysqli_query($conn, "SELECT setting_value FROM app_settings WHERE setting_key = 'store_name'");
 $storeNameRow = mysqli_fetch_assoc($storeNameResult);
 $storeName = $storeNameRow['setting_value'] ?? 'KasirDoelim';
-
-$themeResult = mysqli_query($conn, "SELECT setting_value FROM app_settings WHERE setting_key = 'theme'");
-$themeRow = mysqli_fetch_assoc($themeResult);
-$theme = $themeRow['setting_value'] ?? 'light';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     $newStoreName = trim($_POST['store_name'] ?? '');
@@ -31,20 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     mysqli_stmt_execute($storeStatement);
     mysqli_stmt_close($storeStatement);
 
-    $themeStatement = mysqli_prepare($conn, "INSERT INTO app_settings (setting_key, setting_value) VALUES ('theme', ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
-    mysqli_stmt_bind_param($themeStatement, 's', $newTheme);
-    mysqli_stmt_execute($themeStatement);
-    mysqli_stmt_close($themeStatement);
-
     $storeName = $newStoreName;
-    $theme = $newTheme;
     $settingsMessage = 'Pengaturan berhasil disimpan.';
 }
 ?>
 
 <aside class="sidebar" id="sidebar">
 
-    <a href="index.php" class="sidebar-brand">
+    <a href="<?= BASE_URL ?>kasir/index.php" class="sidebar-brand">
         <i class="bi bi-shop"></i>
         <?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>
     </a>
@@ -72,11 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
         <a href="<?= BASE_URL ?>kasir/penjualan/penjualan.php">
             <i class="bi bi-tags"></i>
             <span>Riwayat Transaksi</span>
-        </a>
-
-        <a href="<?= BASE_URL ?>kasir/laporan/laporan.php">
-            <i class="bi bi-people"></i>
-            <span>Laporan</span>
         </a>
 
         <a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">
@@ -110,22 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
                 <?php endif; ?>
                 <form action="" method="POST">
                     <div class="mb-3">
-                        <label class="form-label" for="themeselect">Tema</label>
-                        <select class="form-select" id="themeselect" name="theme">
-                            <option value="light" <?= $theme === 'light' ? 'selected' : '' ?>>Light</option>
-                            <option value="dark" <?= $theme === 'dark' ? 'selected' : '' ?>>Dark</option>
-                        </select>
-                    </div>
-                    <section class="settings-languange">
-                        <label class="language-label" for="languageselect">Bahasa</label>
-                        <select id="LanguageSelect">
-                            <option value="id">ID Bahasa</option>
-                            <option value="en">GB English</option>
-                            <option value="ja">JP 日本語</option>
-                        </select>
-                    </section>
-
-                    <div class="mb-3">
                         <label class="form-label" for="store_name">Nama Toko</label>
                         <input class="form-control" type="text" id="store_name" name="store_name" value="<?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>
                     </div>
@@ -139,3 +105,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
 </div>
 
 <!-- Overlay -->
+ <div class="sidebar-overlay" id="sidebarOverlay"></div>

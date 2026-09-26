@@ -76,29 +76,6 @@ function filterData() {
   alert("Filter tanggal: " + (from || "-") + " sampai " + (to || "-"));
 }
 
-function initializeTheme() {
-  const themeselect = document.getElementById("themeselect");
-  const bodyTheme = document.body.dataset.theme || localStorage.getItem("theme") || "light";
-  const savedtheme = ["light", "dark"].includes(bodyTheme) ? bodyTheme : "light";
-
-  document.body.classList.remove("light", "dark");
-  document.body.classList.add(savedtheme);
-  document.body.dataset.theme = savedtheme;
-  localStorage.setItem("theme", savedtheme);
-
-  if (!themeselect) {
-    return;
-  }
-
-  themeselect.value = savedtheme;
-  themeselect.addEventListener("change", function () {
-    const theme = this.value;
-    document.body.classList.remove("light", "dark");
-    document.body.classList.add(theme);
-    document.body.dataset.theme = theme;
-    localStorage.setItem("theme", theme);
-  });
-}
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeTheme);

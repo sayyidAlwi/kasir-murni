@@ -85,7 +85,7 @@
                                     $data = mysqli_fetch_assoc($query);
 
                                     $total_penjualan = $data['total_penjualan'] ?? 0;
-                                    echo "Rp". number_format($total_penjualan, 0, ',', '.');
+                                    echo "Rp" . number_format($total_penjualan, 0, ',', '.');
 
                                     ?>
                                 </p>
@@ -125,34 +125,31 @@
                                 <p class="stat-value">
                                     <?php
 
-$query = mysqli_query($conn, "
+                                    $query = mysqli_query($conn, "
     SELECT 
-        SUM(
-            (purchase_details.price - products.purchase_price)
-            * purchase_details.quantity
+        COALESCE(
+            SUM(
+                (td.price - p.purchase_price) * td.quantity
+            ),
+            0
         ) AS keuntungan
-    FROM purchase_details
-    JOIN transactions
-        ON purchase_details.purchase_id = transactions.id
-    JOIN products
-        ON purchase_details.purchase_id = products.id
-    WHERE transactions.created_at >= CURDATE()
-    AND transactions.created_at < CURDATE() + INTERVAL 1 DAY
+    FROM transaction_details td
+    JOIN transactions t
+        ON td.transaction_id = t.id
+    JOIN products p
+        ON td.product_id = p.id
+    WHERE t.created_at >= CURDATE()
+    AND t.created_at < CURDATE() + INTERVAL 1 DAY
 ");
 
-$data = mysqli_fetch_assoc($query);
+                                    $data = mysqli_fetch_assoc($query);
 
-$keuntungan = $data['keuntungan'] ?? 0;
+                                    $keuntungan = $data['keuntungan'] ?? 0;
 
-echo "Rp". number_format($keuntungan, 0, ',', '.');
-
-?>
+                                    echo 'Rp' . number_format($keuntungan, 0, ',', '.');
+                                    ?>
                                 </p>
 
-                                <div class="stat-change text-success">
-                                    <i class="bi bi-arrow-up"></i>
-                                    8.2% bulan ini
-                                </div>
 
                             </div>
 
@@ -226,11 +223,6 @@ echo "Rp". number_format($keuntungan, 0, ',', '.');
                                     ?>
                                 </p>
 
-                                <div class="stat-change text-success">
-                                    <i class="bi bi-arrow-up"></i>
-                                    5.4% bulan ini
-                                </div>
-
                             </div>
 
                             <div class="stat-icon bg-info-subtle text-info">
@@ -247,42 +239,10 @@ echo "Rp". number_format($keuntungan, 0, ',', '.');
 
 
             <!-- =================================================
-             CHART + STOCK
+             STOCK + TRANSAKSI
         ================================================== -->
 
             <div class="row g-4 mb-4">
-
-                <!-- CHART -->
-
-                <div class="col-12 col-xl-8">
-
-                    <div class="dashboard-card">
-
-                        <div class="card-header d-flex justify-content-between align-items-center">
-
-                            <div>
-                                <i class="bi bi-bar-chart-line me-2"></i>
-                                Grafik Penjualan
-                            </div>
-
-                            <select class="form-select form-select-sm" style="width: 130px;">
-                                <option>Minggu ini</option>
-                                <option>Bulan ini</option>
-                                <option>Tahun ini</option>
-                            </select>
-
-                        </div>
-
-                        <div class="chart-container">
-
-                            <canvas id="salesChart"></canvas>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
 
                 <!-- STOCK -->
 
@@ -722,4 +682,3 @@ echo "Rp". number_format($keuntungan, 0, ',', '.');
 </body>
 
 </html>
-```

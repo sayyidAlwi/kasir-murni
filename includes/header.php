@@ -16,20 +16,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const preferredTheme = <?= json_encode($appTheme ?? 'light') ?>;
-            const storedTheme = localStorage.getItem('theme');
-            const theme = (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : preferredTheme;
-            document.body.classList.remove('light', 'dark');
-            document.body.classList.add(theme);
-            document.body.dataset.theme = theme;
-            const themeselect = document.getElementById('themeselect');
-            if (themeselect) {
-                themeselect.value = theme;
-            }
-        });
-    </script>
 
     <nav class="topbar">
 
@@ -57,21 +43,6 @@
 
         <div class="d-flex align-items-center gap-3">
 
-            <!-- Notification -->
-
-            <button
-                class="btn btn-light position-relative"
-                type="button"
-            >
-                <i class="bi bi-bell fs-5"></i>
-
-                <span
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >
-                    3
-                </span>
-            </button>
-
 
             <!-- Profile -->
 
@@ -97,31 +68,7 @@
 
                 </button>
 
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="<?= BASE_URL ?>admin/profil.php"
-                        >
-                            <i class="bi bi-person me-2"></i>
-                            Profil
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="pengaturan.php"
-                        >
-                            <i class="bi bi-gear me-2"></i>
-                            Pengaturan
-                        </a>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">    
 
                     <li>
                         <a

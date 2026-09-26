@@ -703,10 +703,6 @@
 
 @media (max-width: 992px) {
 
-    .sidebar {
-        width: 80px;
-    }
-
     .brand span,
     .menu-item span,
     .menu-label {
@@ -770,10 +766,6 @@
 
 
 @media (max-width: 500px) {
-
-    .sidebar {
-        width: 60px;
-    }
 
     .main-content {
         margin-left: 60px;

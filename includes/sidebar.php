@@ -139,22 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
                 <?php endif; ?>
                 <form action="" method="POST">
                     <div class="mb-3">
-                        <label class="form-label" for="themeselect">Tema</label>
-                        <select class="form-select" id="themeselect" name="theme">
-                            <option value="light" <?= $theme === 'light' ? 'selected' : '' ?>>Light</option>
-                            <option value="dark" <?= $theme === 'dark' ? 'selected' : '' ?>>Dark</option>
-                        </select>
-                    </div>
-                    <section class="settings-languange">
-                        <label class="language-label" for="languageselect">Bahasa</label>
-                        <select id="LanguageSelect">
-                            <option value="id">ID Bahasa</option>
-                            <option value="en">GB English</option>
-                            <option value="ja">JP 日本語</option>
-                        </select>
-                    </section>
-
-                    <div class="mb-3">
                         <label class="form-label" for="store_name">Nama Toko</label>
                         <input class="form-control" type="text" id="store_name" name="store_name" value="<?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>
                     </div>
