@@ -86,33 +86,13 @@
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0">
 
                     <li>
-                        <a
-                            class="dropdown-item"
-                            href="<?= BASE_URL ?>admin/profil.php"
-                        >
-                            <i class="bi bi-person me-2"></i>
-                            Profil
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="pengaturan.php"
-                        >
-                            <i class="bi bi-gear me-2"></i>
-                            Pengaturan
-                        </a>
-                    </li>
-
-                    <li>
                         <hr class="dropdown-divider">
                     </li>
 
                     <li>
                         <a
                             class="dropdown-item text-danger"
-                            href="../auth/logout.php"
+                            href="<?= BASE_URL ?>/auth/logout.php"
                         >
                             <i class="bi bi-box-arrow-right me-2"></i>
                             Logout

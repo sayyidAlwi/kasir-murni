@@ -68,12 +68,12 @@
 
                 </button>
 
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0">    
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
 
                     <li>
                         <a
                             class="dropdown-item text-danger"
-                            href="../auth/logout.php"
+                            href="<?= BASE_URL ?>/auth/logout.php"
                         >
                             <i class="bi bi-box-arrow-right me-2"></i>
                             Logout

@@ -239,123 +239,10 @@
 
 
             <!-- =================================================
-             STOCK + TRANSAKSI
+             TRANSAKSI
         ================================================== -->
 
             <div class="row g-4 mb-4">
-
-                <!-- STOCK -->
-
-                <div class="col-12 col-xl-4">
-
-                    <div class="dashboard-card">
-
-                        <div class="card-header d-flex justify-content-between">
-
-                            <span>
-                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                Stok Menipis
-                            </span>
-
-                            <a href="produk.php" class="text-decoration-none">
-                                Lihat semua
-                            </a>
-
-                        </div>
-
-                        <div class="card-body p-0">
-
-                            <div class="list-group list-group-flush">
-
-                                <div class="list-group-item p-3">
-
-                                    <div class="d-flex justify-content-between">
-
-                                        <div>
-                                            <strong>Kopi Arabica</strong>
-                                            <small class="d-block text-muted">
-                                                SKU: PRD001
-                                            </small>
-                                        </div>
-
-                                        <span class="badge text-bg-danger align-self-center">
-                                            3 tersisa
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="list-group-item p-3">
-
-                                    <div class="d-flex justify-content-between">
-
-                                        <div>
-                                            <strong>Gula Pasir</strong>
-                                            <small class="d-block text-muted">
-                                                SKU: PRD023
-                                            </small>
-                                        </div>
-
-                                        <span class="badge text-bg-warning align-self-center">
-                                            5 tersisa
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="list-group-item p-3">
-
-                                    <div class="d-flex justify-content-between">
-
-                                        <div>
-                                            <strong>Susu UHT</strong>
-                                            <small class="d-block text-muted">
-                                                SKU: PRD045
-                                            </small>
-                                        </div>
-
-                                        <span class="badge text-bg-warning align-self-center">
-                                            7 tersisa
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="list-group-item p-3">
-
-                                    <div class="d-flex justify-content-between">
-
-                                        <div>
-                                            <strong>Teh Celup</strong>
-                                            <small class="d-block text-muted">
-                                                SKU: PRD051
-                                            </small>
-                                        </div>
-
-                                        <span class="badge text-bg-warning align-self-center">
-                                            8 tersisa
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
 
             <!-- =================================================
              TRANSAKSI TERBARU
@@ -370,195 +257,59 @@
                         Transaksi Terbaru
                     </span>
 
-                    <a href="penjualan.php" class="btn btn-sm btn-outline-primary">
+                    <a href="penjualan/penjualan.php" class="btn btn-sm btn-outline-primary">
                         Lihat Semua
                     </a>
 
                 </div>
 
+                <?php
+                $query = mysqli_query($conn, "
+                    SELECT *
+                    FROM transactions
+                    ORDER BY created_at DESC
+                    LIMIT 5
+                    ");
+                ?>
 
                 <div class="card-body p-0">
 
                     <div class="table-responsive">
 
                         <table class="table table-hover align-middle mb-0">
+ <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>ID Transaksi</th>
+                        <th>Tanggal</th>
+                        <th>Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
 
-                            <thead class="table-light">
+                <tbody>
+                    <?php 
+                    $no = 1;
+                    while ($data = mysqli_fetch_assoc($query)) : 
+                    ?>
+                
+                    <tr>
+                        <td><?= $no++; ?></td>
+                        <td><?= $data['invoice_number']; ?></td>
+                        <td><?= date('d-m-Y', strtotime($data['created_at'])); ?></td>
+                        <td>
+                            Rp <?= number_format($data['total'], 0, ',', '.'); ?>
+                        </td>
+                        <td>
+                            <a href="penjualan/detail.php?idPenjualan=<?= $data['id']; ?>" 
+                               class="btn btn-sm btn-primary">
+                                Detail
+                            </a>
+                        </td>
+                    </tr>
 
-                                <tr>
-
-                                    <th class="px-4">
-                                        ID Transaksi
-                                    </th>
-
-                                    <th>
-                                        Pelanggan
-                                    </th>
-
-                                    <th>
-                                        Tanggal
-                                    </th>
-
-                                    <th>
-                                        Total
-                                    </th>
-
-                                    <th>
-                                        Status
-                                    </th>
-
-                                    <th class="text-end px-4">
-                                        Aksi
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                <tr>
-
-                                    <td class="px-4 fw-semibold">
-                                        #TRX-00125
-                                    </td>
-
-                                    <td>
-                                        Budi Santoso
-                                    </td>
-
-                                    <td>
-                                        13 Sep 2026, 09:42
-                                    </td>
-
-                                    <td>
-                                        Rp 125.000
-                                    </td>
-
-                                    <td>
-                                        <span class="badge text-bg-success">
-                                            Selesai
-                                        </span>
-                                    </td>
-
-                                    <td class="text-end px-4">
-
-                                        <a href="#" class="btn btn-sm btn-light">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td class="px-4 fw-semibold">
-                                        #TRX-00124
-                                    </td>
-
-                                    <td>
-                                        Andi Wijaya
-                                    </td>
-
-                                    <td>
-                                        13 Sep 2026, 09:15
-                                    </td>
-
-                                    <td>
-                                        Rp 75.000
-                                    </td>
-
-                                    <td>
-                                        <span class="badge text-bg-success">
-                                            Selesai
-                                        </span>
-                                    </td>
-
-                                    <td class="text-end px-4">
-
-                                        <a href="#" class="btn btn-sm btn-light">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td class="px-4 fw-semibold">
-                                        #TRX-00123
-                                    </td>
-
-                                    <td>
-                                        Siti Aminah
-                                    </td>
-
-                                    <td>
-                                        13 Sep 2026, 08:53
-                                    </td>
-
-                                    <td>
-                                        Rp 245.000
-                                    </td>
-
-                                    <td>
-                                        <span class="badge text-bg-success">
-                                            Selesai
-                                        </span>
-
-                                    </td>
-
-                                    <td class="text-end px-4">
-
-                                        <a href="#" class="btn btn-sm btn-light">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td class="px-4 fw-semibold">
-                                        #TRX-00122
-                                    </td>
-
-                                    <td>
-                                        Rudi Hartono
-                                    </td>
-
-                                    <td>
-                                        13 Sep 2026, 08:21
-                                    </td>
-
-                                    <td>
-                                        Rp 95.000
-                                    </td>
-
-                                    <td>
-                                        <span class="badge text-bg-warning">
-                                            Pending
-                                        </span>
-
-                                    </td>
-
-                                    <td class="text-end px-4">
-
-                                        <a href="#" class="btn btn-sm btn-light">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-
-                                    </td>
-
-                                </tr>
-
-                            </tbody>
+                    <?php endwhile; ?>
+                </tbody>
 
                         </table>
 

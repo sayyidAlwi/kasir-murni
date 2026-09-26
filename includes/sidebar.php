@@ -17,35 +17,23 @@ $storeNameResult = mysqli_query($conn, "SELECT setting_value FROM app_settings W
 $storeNameRow = mysqli_fetch_assoc($storeNameResult);
 $storeName = $storeNameRow['setting_value'] ?? 'KasirDoelim';
 
-$themeResult = mysqli_query($conn, "SELECT setting_value FROM app_settings WHERE setting_key = 'theme'");
-$themeRow = mysqli_fetch_assoc($themeResult);
-$theme = $themeRow['setting_value'] ?? 'light';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     $newStoreName = trim($_POST['store_name'] ?? '');
     $newStoreName = $newStoreName !== '' ? $newStoreName : 'KasirDoelim';
-    $newTheme = $_POST['theme'] ?? 'light';
-    $newTheme = in_array($newTheme, ['light', 'dark'], true) ? $newTheme : 'light';
 
     $storeStatement = mysqli_prepare($conn, "INSERT INTO app_settings (setting_key, setting_value) VALUES ('store_name', ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
     mysqli_stmt_bind_param($storeStatement, 's', $newStoreName);
     mysqli_stmt_execute($storeStatement);
     mysqli_stmt_close($storeStatement);
 
-    $themeStatement = mysqli_prepare($conn, "INSERT INTO app_settings (setting_key, setting_value) VALUES ('theme', ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
-    mysqli_stmt_bind_param($themeStatement, 's', $newTheme);
-    mysqli_stmt_execute($themeStatement);
-    mysqli_stmt_close($themeStatement);
-
     $storeName = $newStoreName;
-    $theme = $newTheme;
     $settingsMessage = 'Pengaturan berhasil disimpan.';
 }
 ?>
 
 <aside class="sidebar" id="sidebar">
 
-    <a href="index.php" class="sidebar-brand">
+    <a href="<?= BASE_URL ?>admin/index.php" class="sidebar-brand">
         <i class="bi bi-shop"></i>
         <?= htmlspecialchars($storeName, ENT_QUOTES, 'UTF-8') ?>
     </a>
@@ -70,17 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             <span>Produk</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/kategori/kategori.php">
+        <a href="<?= BASE_URL ?>admin/kategori/kategori.php" class="<?= $currentPage == 'kategori.php' ? 'active' : '' ?>">
             <i class="bi bi-tags"></i>
             <span>Kategori</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/pelanggan/pelanggan.php">
+        <a href="<?= BASE_URL ?>admin/pelanggan/pelanggan.php" class="<?= $currentPage == 'pelanggan.php' ? 'active' : '' ?>">
             <i class="bi bi-people"></i>
             <span>Pelanggan</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/supplier/supplier.php">
+        <a href="<?= BASE_URL ?>admin/supplier/supplier.php" class="<?= $currentPage == 'supplier.php' ? 'active' : '' ?>">
             <i class="bi bi-truck"></i>
             <span>Supplier</span>
         </a>
@@ -89,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             Transaksi
         </div>
 
-        <a href="<?= BASE_URL ?>admin/penjualan/penjualan.php">
+        <a href="<?= BASE_URL ?>admin/penjualan/penjualan.php" class="<?= $currentPage == 'penjualan.php' ? 'active' : '' ?>">
             <i class="bi bi-cart3"></i>
             <span>Penjualan</span>
         </a>
 
-        <a href="<?= BASE_URL ?>admin/pembelian/pembelian.php">
+        <a href="<?= BASE_URL ?>admin/pembelian/pembelian.php" class="<?= $currentPage == 'pembelian.php' ? 'active' : '' ?>">
             <i class="bi bi-bag-plus"></i>
             <span>Pembelian</span>
         </a>
@@ -103,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             Sistem
         </div>
 
-        <a href="<?= BASE_URL ?>admin/pengguna/pengguna.php">
+        <a href="<?= BASE_URL ?>admin/pengguna/pengguna.php" class="<?= $currentPage == 'pengguna.php' ? 'active' : '' ?>">
             <i class="bi bi-person-gear"></i>
             <span>Pengguna</span>
         </a>
