@@ -1,12 +1,13 @@
 
 <?php 
-    session_start();
     include "../config/database.php";
 
     if (!isset($_SESSION['id'])) {
         header('Location: ../auth/login.php');
         exit;
     }
+
+    
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Content-Type: application/json');
@@ -172,60 +173,6 @@
             <!-- BAGIAN PRODUK -->
             <section class="product-section">
 
-                <h4 class="section-title">
-                    Kategori
-                </h4>
-
-
-                <!-- CATEGORY -->
-                <div class="category-list">
-
-                    <button
-                        class="category-btn active"
-                        data-category="Semua"
-                    >
-                        <i class="bi bi-grid"></i>
-                        <span>Semua</span>
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="Makanan"
-                    >
-                        <i class="bi bi-egg-fried"></i>
-                        <span>Makanan</span>
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="Minuman"
-                    >
-                        <i class="bi bi-cup-hot"></i>
-                        <span>Minuman</span>
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="Snack"
-                    >
-                        <i class="bi bi-cookie"></i>
-                        <span>Snack</span>
-                    </button>
-
-
-                    <button
-                        class="category-btn"
-                        data-category="Lainnya"
-                    >
-                        <i class="bi bi-three-dots"></i>
-                        <span>Lainnya</span>
-                    </button>
-
-                </div>
-
 
                 <!-- PRODUCT HEADER -->
                 <div class="product-header">
@@ -235,14 +182,6 @@
                     </h4>
 
                     <div class="view-button">
-
-                        <button class="active">
-                            <i class="bi bi-grid"></i>
-                        </button>
-
-                        <button>
-                            <i class="bi bi-list"></i>
-                        </button>
 
                     </div>
 

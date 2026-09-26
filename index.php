@@ -136,7 +136,7 @@ unset($_SESSION['login_error'], $_SESSION['old_username']);
     </script>
     
 
-    <script>
+    <!-- <script>
         (function () {
             const form = document.getElementById("loginForm");
             const usernameInput = document.getElementById("username");
@@ -198,7 +198,7 @@ unset($_SESSION['login_error'], $_SESSION['old_username']);
                 });
             });
         }());
-    </script>
+    </script> -->
 </body>
 
 </html>

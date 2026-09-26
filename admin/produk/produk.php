@@ -1,5 +1,4 @@
 <?php 
-    session_start();
     include("../../config/database.php");
 
     $categories_result = mysqli_query($conn, "SELECT * FROM categories ORDER BY name ASC");

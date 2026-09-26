@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
 
 <body>
-    <?php 
-    session_start();
+    <?php
     include "../config/database.php";
     ?>
 
@@ -75,7 +73,21 @@
                                 </div>
 
                                 <p class="stat-value">
-                                    Rp 2.450.000
+
+                                    <?php
+                                    $query = mysqli_query($conn, "
+    SELECT SUM(total) AS total_penjualan
+    FROM transactions
+    WHERE created_at >= CURDATE()
+    AND created_at < CURDATE() + INTERVAL 1 DAY
+");
+
+                                    $data = mysqli_fetch_assoc($query);
+
+                                    $total_penjualan = $data['total_penjualan'] ?? 0;
+                                    echo "Rp". number_format($total_penjualan, 0, ',', '.');
+
+                                    ?>
                                 </p>
 
                                 <div class="stat-change text-success">
@@ -111,7 +123,30 @@
                                 </div>
 
                                 <p class="stat-value">
-                                    Rp 18,5 Jt
+                                    <?php
+
+$query = mysqli_query($conn, "
+    SELECT 
+        SUM(
+            (purchase_details.price - products.purchase_price)
+            * purchase_details.quantity
+        ) AS keuntungan
+    FROM purchase_details
+    JOIN transactions
+        ON purchase_details.purchase_id = transactions.id
+    JOIN products
+        ON purchase_details.purchase_id = products.id
+    WHERE transactions.created_at >= CURDATE()
+    AND transactions.created_at < CURDATE() + INTERVAL 1 DAY
+");
+
+$data = mysqli_fetch_assoc($query);
+
+$keuntungan = $data['keuntungan'] ?? 0;
+
+echo "Rp". number_format($keuntungan, 0, ',', '.');
+
+?>
                                 </p>
 
                                 <div class="stat-change text-success">
@@ -147,10 +182,10 @@
                                 </div>
 
                                 <p class="stat-value">
-                                    <?php 
-                                        $produk = mysqli_query($conn, "SELECT * FROM products");
-                                        echo mysqli_num_rows($produk)
-                                    ?>
+                                    <?php
+                                    $produk = mysqli_query($conn, "SELECT * FROM products");
+                                    echo mysqli_num_rows($produk)
+                                        ?>
                                 </p>
 
                                 <div class="stat-change text-muted">
@@ -185,9 +220,9 @@
                                 </div>
 
                                 <p class="stat-value">
-                                    <?php 
-                                       $pelanggan = mysqli_query($conn, "SELECT * FROM customers");
-                                        echo mysqli_num_rows($pelanggan);
+                                    <?php
+                                    $pelanggan = mysqli_query($conn, "SELECT * FROM customers");
+                                    echo mysqli_num_rows($pelanggan);
                                     ?>
                                 </p>
 

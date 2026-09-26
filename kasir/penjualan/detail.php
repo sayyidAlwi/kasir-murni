@@ -1,8 +1,7 @@
 <?php
-session_start();
 include '../../config/database.php';
-include '../../includes/header.php';
-include '../../includes/sidebar.php';
+include '../includes/header.php';
+include '../includes/sidebar.php';
 
 if (!isset($_SESSION['id'])) {
     header('Location: ../../index.php');
