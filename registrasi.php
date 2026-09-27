@@ -80,7 +80,18 @@ unset($_SESSION['login_error'], $_SESSION['old_username']);
                         <?php endif; ?>
 
                         <!-- Form Login -->
-                        <form id="loginForm" action="auth/login.php" method="POST" novalidate>
+                        <form id="registForm" action="auth/regist.php" method="POST" novalidate>
+                            
+                            <!-- Nama -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label">
+                                    Nama
+                                </label>
+
+                                <input type="text" class="form-control" id="nama" name="name"
+                                    value="<?= htmlspecialchars($oldUsername, ENT_QUOTES, 'UTF-8') ?>"
+                                    placeholder="Masukkan Nama" maxlength="50" autocomplete="nama" required>
+                            </div>
 
                             <!-- Username -->
                             <div class="mb-3">
@@ -91,7 +102,6 @@ unset($_SESSION['login_error'], $_SESSION['old_username']);
                                 <input type="text" class="form-control" id="username" name="username"
                                     value="<?= htmlspecialchars($oldUsername, ENT_QUOTES, 'UTF-8') ?>"
                                     placeholder="Masukkan username" maxlength="50" autocomplete="username" required>
-                                <div id="usernameError" class="invalid-feedback"></div>
                             </div>
 
                             <!-- Password -->
@@ -106,15 +116,27 @@ unset($_SESSION['login_error'], $_SESSION['old_username']);
                                 <div id="passwordError" class="invalid-feedback"></div>
                             </div>
 
+                            <!-- Confirm Password -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">
+                                    Confirm Password
+                                </label>
+
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    placeholder="Masukkan password" minlength="8" autocomplete="current-password"
+                                    aria-describedby="passwordError" required>
+                                <div id="passwordError" class="invalid-feedback"></div>
+                            </div>
+                            
 
                             <!-- Button -->
-                            <button type="submit" class="btn btn-primary w-100">
-                                Login
+                            <button type="submit" class="btn btn-primary w-100" name="regist">
+                                Registrasi
                             </button>
                         </form>
 
                         <div class="text-center mt-3">
-                            <a href="registrasi.php">Registrasi</a>
+                            <a href="index.php">Login</a>
                         </div>
 
                     </div>
