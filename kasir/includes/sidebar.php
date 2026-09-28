@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
         </a>
 
         <a href="<?= BASE_URL ?>kasir/penjualan/penjualan.php" class="<?= $currentPage == 'penjualan.php' ? 'active' : '' ?>">
-            <i class="bi bi-tags"></i>
+            <i class="bi bi-journal-text"></i>
             <span>Riwayat Transaksi</span>
         </a>
 

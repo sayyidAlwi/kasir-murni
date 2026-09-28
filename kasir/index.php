@@ -187,15 +187,31 @@
         <!-- BAGIAN PRODUK -->
             <section class="product-section">
 
-                <!-- CATEGORY HEADER -->
-                 <div class="product-header">
-                    <h4 class="section-title mb-0">
-                        Kategori
-                    </h4>
+          <h4 class="section-title">
+                    Kategori
+                </h4>
+
+
+                <!-- CATEGORY -->
+                <div class="category-list">
+                    <button type="button" class="category-btn active" data-category="all">
+                        <i class="bi bi-grid"></i>
+                        <span>Semua</span>
+                    </button>
+
+                    <?php
+                    $categoryResult = mysqli_query($conn, "SELECT id, name FROM categories ORDER BY name ASC");
+                    while ($category = mysqli_fetch_assoc($categoryResult)):
+                        $categoryName = htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8');
+                    ?>
+                        <button type="button" class="category-btn" data-category="<?= $categoryName ?>">
+                            <i class="bi bi-tag"></i>
+                            <span><?= $categoryName ?></span>
+                        </button>
+                    <?php endwhile; ?>
                 </div>
 
-                <!-- CATEGORY GRID -->
-                 <div class="category-grid" id="categoryContainer"></div>
+
 
                 <!-- PRODUCT HEADER -->
                 <div class="product-header">
@@ -224,9 +240,9 @@
 
                     if (!empty($where)) {
                         $whereSql = " WHERE " . implode(' AND ', $where);
-                    } else {
-                        $whereSql = '';
-                    }
+                        } else {
+                            $whereSql = '';
+                        }
 
                     $query = mysqli_query($conn, "SELECT p.*, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id$whereSql");
 
@@ -238,7 +254,7 @@
 
                         <div
                             class="product-card"
-                            data-category="<?= $item['category_name']; ?>"
+                            data-category="<?= htmlspecialchars($item['category_name'], ENT_QUOTES, 'UTF-8'); ?>"
                             data-name="<?= strtolower($item['name']); ?>"
                             data-code="<?= strtolower($item['code']); ?>"
                         >
@@ -748,4 +764,19 @@ function processPayment() {
             showPaymentNotification(error.message || 'Terjadi kesalahan saat memproses transaksi.', 'error');
         });
 }
+
+document.querySelectorAll('.category-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+        const selectedCategory = button.dataset.category;
+
+        document.querySelectorAll('.category-btn').forEach((item) => {
+            item.classList.toggle('active', item === button);
+        });
+
+        document.querySelectorAll('.product-card').forEach((product) => {
+            product.hidden = selectedCategory !== 'all'
+                && product.dataset.category !== selectedCategory;
+        });
+    });
+});
 </script>

@@ -97,7 +97,7 @@ $query_detail = mysqli_query($conn, "
                     <table class="table table-bordered align-middle">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Kode</th>
                                 <th>Produk</th>
                                 <th>Harga Beli</th>
                                 <th class="text-center">Qty</th>
@@ -111,7 +111,7 @@ $query_detail = mysqli_query($conn, "
                                 while ($detail = mysqli_fetch_assoc($query_detail)) {
                             ?>
                                 <tr>
-                                    <td><?= $no++ ?></td>
+                                    <td><?= $detail['id']; ?></td>
                                     <td>
                                         <div class="fw-bold"><?= htmlspecialchars($detail['product_name']) ?></div>
                                         <small class="text-muted">Kode: <?= htmlspecialchars($detail['product_code']) ?></small>
