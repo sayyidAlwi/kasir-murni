@@ -33,6 +33,7 @@ $query_detail = mysqli_query($conn, "
     FROM purchase_details pd
     INNER JOIN products pr ON pr.id = pd.product_id
     WHERE pd.purchase_id = $id
+    ORDER BY pd.id ASC
 ");
 ?>
 
@@ -97,7 +98,7 @@ $query_detail = mysqli_query($conn, "
                     <table class="table table-bordered align-middle">
                         <thead>
                             <tr>
-                                <th>Kode</th>
+                                <th>#</th>
                                 <th>Produk</th>
                                 <th>Harga Beli</th>
                                 <th class="text-center">Qty</th>
@@ -111,7 +112,7 @@ $query_detail = mysqli_query($conn, "
                                 while ($detail = mysqli_fetch_assoc($query_detail)) {
                             ?>
                                 <tr>
-                                    <td><?= $detail['id']; ?></td>
+                                    <td><?= $no++ ?></td>
                                     <td>
                                         <div class="fw-bold"><?= htmlspecialchars($detail['product_name']) ?></div>
                                         <small class="text-muted">Kode: <?= htmlspecialchars($detail['product_code']) ?></small>

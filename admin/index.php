@@ -90,11 +90,6 @@
                                     ?>
                                 </p>
 
-                                <div class="stat-change text-success">
-                                    <i class="bi bi-arrow-up"></i>
-                                    12.5% dari kemarin
-                                </div>
-
                             </div>
 
                             <div class="stat-icon bg-primary-subtle text-primary">
@@ -184,10 +179,6 @@
                                     echo mysqli_num_rows($produk)
                                         ?>
                                 </p>
-
-                                <div class="stat-change text-muted">
-                                    Produk tersedia
-                                </div>
 
                             </div>
 
