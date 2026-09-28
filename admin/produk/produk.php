@@ -22,7 +22,7 @@
 
     <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">
-  Tambah<i class="bi bi-person-plus-fill m-2"></i>
+  Tambah<i class="bi bi-box2 m-2"></i>
 </button>
 
 <!-- Modal -->

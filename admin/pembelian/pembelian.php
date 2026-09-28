@@ -29,7 +29,7 @@ $products = mysqli_query($conn, "SELECT id, code, name, purchase_price FROM prod
                 </div>
                 <div>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit">
-                        Tambah Pembelian<i class="bi bi-person-plus-fill m-2"></i>
+                        Tambah Pembelian<i class="bi bi-bag-plus-fill m-2"></i>
                     </button>
 
                     <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

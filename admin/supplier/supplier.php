@@ -18,7 +18,7 @@
 
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Tambah<i class="bi bi-person-plus-fill m-2"></i>
+                Tambah<i class="bi bi-truck m-2"></i>
             </button>
 
             <!-- Modal -->
