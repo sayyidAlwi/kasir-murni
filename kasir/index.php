@@ -147,44 +147,61 @@
     include("includes/sidebar.php");
     ?>
 
-    
+    <?php
+    $search = isset($_GET['searchProduk']) ? trim($_GET['searchProduk']) : '';
+    ?>
 
 <main class="main">
     <section class="content">
-    <header class="topbar">
+    <header class="">
 
-            <div class="search-box">
+            <form action="" method="GET" class="topbar gap-3 d-flex">
+                <div class="search-box">
+                
+                    <i class="bi bi-search"></i>
+                
+                    <input
+                        type="text"
+                        id="searchProduk"
+                        name="searchProduk"
+                        placeholder="Cari produk... (nama / kode)"
+                        value="<?= htmlspecialchars($search) ?>"
+                    >
+                
+                </div>
+                
+                <div>
+                    <button class="btn btn-primary p-2">
+                        Search
+                    </button>
+                </div>
+            </form>
 
-                <i class="bi bi-search"></i>
-
-                <input
-                    type="text"
-                    id="searchProduct"
-                    placeholder="Cari produk... (nama / kode)"
-                >
-
-            </div>
+            
         </header>
 
 
         <!-- CONTENT -->
         <div class="content-wrapper">
-
-            <!-- BAGIAN PRODUK -->
+        
+        <!-- BAGIAN PRODUK -->
             <section class="product-section">
 
+                <!-- CATEGORY HEADER -->
+                 <div class="product-header">
+                    <h4 class="section-title mb-0">
+                        Kategori
+                    </h4>
+                </div>
+
+                <!-- CATEGORY GRID -->
+                 <div class="category-grid" id="categoryContainer"></div>
 
                 <!-- PRODUCT HEADER -->
                 <div class="product-header">
-
                     <h4 class="section-title mb-0">
                         Produk
                     </h4>
-
-                    <div class="view-button">
-
-                    </div>
-
                 </div>
 
 
@@ -196,7 +213,23 @@
 
                 <?php 
 
-                    $query = mysqli_query($conn, "SELECT p.*, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id");
+                    $search = trim($_GET['searchProduk'] ?? '');
+
+                    $where = [];
+
+                    if ($search !== '') {
+                        $search = mysqli_real_escape_string($conn, $search);
+                        $where[] = "(c.name LIKE '%$search%' OR p.name LIKE '%$search%' OR p.code LIKE '%$search%')";
+                    }
+
+                    if (!empty($where)) {
+                        $whereSql = " WHERE " . implode(' AND ', $where);
+                    } else {
+                        $whereSql = '';
+                    }
+
+                    $query = mysqli_query($conn, "SELECT p.*, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id$whereSql");
+
                     $produk = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
                 ?>
